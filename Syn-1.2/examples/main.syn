@@ -1,0 +1,4 @@
+var response = "Hello World!";
+var response2 = "This is Syn.";
+
+print(name);
