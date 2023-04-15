@@ -11,7 +11,7 @@ $(exec): $(objects)
 
 install:
 	make
-	cp ./syn.out /Language\ in\ C/
+	cp ./syn.out /Syn-1.3
 
 clean:
 	-rm *.out
