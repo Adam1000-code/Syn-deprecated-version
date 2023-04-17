@@ -1,0 +1,6 @@
+var response = "Hello, World!";
+var response2 = "This is Syn.";
+
+print(response);
+print(response2);
+print("A language made in C that uses an interpreter.");

@@ -1,0 +1,6 @@
+function basicFunction()
+{
+    print("This is a basic function");
+};
+
+basicFunction();
