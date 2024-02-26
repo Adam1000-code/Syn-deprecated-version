@@ -7,6 +7,12 @@ typedef struct TOKEN_STRUCT
     {
         TOKEN_ID,
         TOKEN_EQUALS,
+        TOKEN_PLUS,
+        TOKEN_MINUS,
+        TOKEN_MULTIPLY,
+        TOKEN_DIVIDE,
+        TOKEN_FLOAT,
+        TOKEN_INTEGER,
         TOKEN_STRING,
         TOKEN_SEMI,
         TOKEN_LPAREN,

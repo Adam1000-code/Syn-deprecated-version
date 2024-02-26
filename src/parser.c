@@ -1,5 +1,6 @@
 #include "include/parser.h"
 #include "include/scope.h"
+#include "include/token.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -32,6 +33,20 @@ void parser_eat(parser_T* parser, int token_type)
         exit(1);
     }
 }
+
+token_T* parser_peek(parser_T* parser)
+{
+    lexer_T* lexer = parser->lexer;
+    long prev_position = lexer->position;
+    token_T* prev_token = parser->current_token;
+
+    token_T* token = lexer_get_next_token(lexer);
+    parser->current_token = prev_token;
+    lexer->position = prev_position;
+
+    return token;
+}
+
 
 AST_T* parser_parse(parser_T* parser, scope_T* scope)
 {
@@ -158,7 +173,29 @@ AST_T* parser_parse_function_definition(parser_T* parser, scope_T* scope)
     strcpy(ast->function_definition_name, function_name);
     
     parser_eat(parser, TOKEN_ID);
+
     parser_eat(parser, TOKEN_LPAREN);
+
+    ast->function_definition_args = calloc(1, sizeof(struct AST_STRUCT*));
+
+    AST_T* arg = parser_parse_variable(parser, scope);
+    ast->function_definition_args_size += 1;
+    ast->function_definition_args[ast->function_definition_args_size - 1] = arg;
+
+    while(parser->current_token->type == TOKEN_COMMA)
+    {
+        parser_eat(parser, TOKEN_COMMA);
+        
+        ast->function_definition_args_size += 1;
+        ast->function_definition_args = realloc(
+            ast->function_definition_args,
+            ast->function_definition_args_size * sizeof(struct AST_STRUCT*)
+        );
+
+        AST_T* arg = parser_parse_variable(parser, scope);
+        ast->function_definition_args[ast->function_definition_args_size - 1] = arg;
+    }
+
     parser_eat(parser, TOKEN_RPAREN);
 
     parser_eat(parser, TOKEN_RBRACE);
@@ -208,7 +245,7 @@ AST_T* parser_parse_id(parser_T* parser, scope_T* scope)
     {
         return parser_parse_variable_definition(parser, scope);
     }
-    if(strcmp(parser->current_token->value, "function") == 0)
+    if(strcmp(parser->current_token->value, "func") == 0)
     {
         return parser_parse_function_definition(parser, scope);
     }

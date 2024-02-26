@@ -1,6 +1,6 @@
-function basicFunction()
+func basicFunction(x)
 {
-    print("This is a basic function");
+    output(x);
 };
 
-basicFunction();
+basicFunction("This is a basic function");

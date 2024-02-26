@@ -9,6 +9,7 @@ typedef struct AST_STRUCT
         AST_VARIABLE_DEFINITION,
         AST_FUNCTION_DEFINITION,
         AST_VARIABLE,
+        AST_INTEGER,
         AST_FUNCTION_CALL,
         AST_STRING,
         AST_COMPOUND,
@@ -19,9 +20,11 @@ typedef struct AST_STRUCT
 
     char* variable_definition_variable_name;
     struct AST_STRUCT* variable_definition_value;
-
+    
     struct AST_STRUCT* function_definition_body;
     char* function_definition_name;
+    struct AST_STRUCT** function_definition_args;
+    size_t function_definition_args_size;
 
     char* variable_name;
 
@@ -34,6 +37,12 @@ typedef struct AST_STRUCT
     struct AST_STRUCT** compound_value;
 
     size_t compound_size;
+
+    int int_value;
+    float float_value;
+    struct AST_STRUCT* binop_left;
+    struct AST_STRUCT* binop_right;
+    int binop_type;
 } AST_T;
 
 AST_T* init_ast(int type);
